@@ -9,6 +9,8 @@ bool ledState = false;
 int threshold = 2750;
 int selectedOption = 0;
 
+const int TRIVIAL_QUESTIONS_PER_GAME = 3;
+
 // Menu Options
 MenuOption mainMenuOptions[] = {
     {"LED", 0},
@@ -33,8 +35,8 @@ MenuOption lightMenuOptions[] = {
 const int lightMenuOptionsSize = sizeof(lightMenuOptions) / sizeof(lightMenuOptions[0]);
 
 MenuOption gameMenuOptions[] = {
-    {"TIC TAC TOE", 1},
+    {"TRIVIAL", 1},
     {"SNAKE", 2},
-    {"EXIT", 3}
+    {"PONG", 3}
 };
 const int gameMenuOptionsSize = sizeof(gameMenuOptions) / sizeof(gameMenuOptions[0]);

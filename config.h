@@ -29,11 +29,20 @@ struct MenuOption {
     int optionValue;
 };
 
+struct TrivialQuestion {
+    String question;
+    String options[3];
+    int correctAnswer;
+    int _id;
+};
+
 // Global Variables
+#define TRIVIAL_MAX_QUESTIONS 3 
 extern int ldrValue;
 extern bool ledState;
 extern int threshold;
 extern int selectedOption;
+extern const int TRIVIAL_QUESTIONS_PER_GAME;
 
 // Menu Options
 extern MenuOption mainMenuOptions[];

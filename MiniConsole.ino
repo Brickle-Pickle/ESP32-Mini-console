@@ -3,12 +3,13 @@
 #include "utils.h"
 #include "ledFunctions.h"
 #include "esp_sleep.h"
+#include "gamesFunctions.h"
 
 // Setup
 void setup() {
     // Serial
     Serial.begin(115200);
-    delay(1000);
+    delay(4000);
     Serial.println("Started mini console");
 
     // Pin init
@@ -52,7 +53,7 @@ void loop() {
         switch (selectedOption) {
             case 0: ledMenu(ledState, LED, ledMenuOptions); break;
             // case 1: lightMenu(); break;
-            // case 2: gameMenu(); break;
+            case 2: gameMenu(); break;
             case 3: exitProgram(); break;
         }
     }
