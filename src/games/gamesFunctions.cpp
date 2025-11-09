@@ -2,6 +2,7 @@
 #include "src/games/gamesFunctions.h"
 #include "src/games/trivial/trivial.h"
 #include "src/games/snake/snake.h"
+#include "src/games/reaction_time/reactionTime.h"
 
 void gameMenu() {
     bool exit = false;
@@ -39,5 +40,6 @@ void gameMenuController(int selectedOption) {
         case 0: playTrivial(); break;
         case 1: playSnake(); break;
         // case 2: playPong(); break;
+        case 3: playReaction(); break;
     }
 }

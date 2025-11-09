@@ -128,19 +128,34 @@ void getTrivialQuestions() {
     
     Serial.println("Questions file opened successfully");
 
-    // Read questions from file
-    int questionIndex = 0;
-    while (file.available() && questionIndex < TRIVIAL_MAX_QUESTIONS) {
+    // Read all questions into a temporary array first
+    String tempQuestions[TRIVIAL_MAX_QUESTIONS];
+    int totalQuestions = 0;
+    
+    while (file.available() && totalQuestions < TRIVIAL_MAX_QUESTIONS) {
         String line = file.readStringUntil('\n');
         if (line.length() > 0) {
-            Serial.print("Loading question ");
-            Serial.print(questionIndex);
-            Serial.print(": ");
-            Serial.println(line);
-            renderTrivialQuestion(line, questionIndex);
-            questionIndex++;
-            trivialQuestionsSize++;
+            tempQuestions[totalQuestions] = line;
+            totalQuestions++;
         }
+    }
+    
+    // Randomize the order of questions
+    for (int i = totalQuestions - 1; i > 0; i--) {
+        int j = random(0, i + 1);
+        String temp = tempQuestions[i];
+        tempQuestions[i] = tempQuestions[j];
+        tempQuestions[j] = temp;
+    }
+    
+    // Now load the questions in random order
+    for (int i = 0; i < totalQuestions; i++) {
+        Serial.print("Loading question ");
+        Serial.print(i);
+        Serial.print(": ");
+        Serial.println(tempQuestions[i]);
+        renderTrivialQuestion(tempQuestions[i], i);
+        trivialQuestionsSize++;
     }
     file.close();
     Serial.print("Total questions loaded: ");
@@ -213,6 +228,7 @@ void setupTrivialData() {
     trivialQuestionsSize = 0;
     for (int i = 0; i < TRIVIAL_MAX_QUESTIONS; i++) {
         trivialAlreadyAnsweredQuestions[i] = 0;
+        trivialQuestions[i] = TrivialQuestion{ "", {"", "", ""}, 0, 0 };
     }
     trivialGameOver = false;
 

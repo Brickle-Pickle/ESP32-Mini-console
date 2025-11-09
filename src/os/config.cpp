@@ -39,6 +39,7 @@ const int lightMenuOptionsSize = sizeof(lightMenuOptions) / sizeof(lightMenuOpti
 MenuOption gameMenuOptions[] = {
     {"TRIVIAL", 1},
     {"SNAKE", 2},
-    {"PONG", 3}
+    {"PONG", 3},
+    {"REACTION!", 4}
 };
 const int gameMenuOptionsSize = sizeof(gameMenuOptions) / sizeof(gameMenuOptions[0]);
