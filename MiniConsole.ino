@@ -1,9 +1,9 @@
 // Imports
-#include "config.h"
-#include "utils.h"
-#include "ledFunctions.h"
+#include "src/os/config.h"
+#include "src/os/utils.h"
+#include "src/led/ledFunctions.h"
+#include "src/games/gamesFunctions.h"
 #include "esp_sleep.h"
-#include "gamesFunctions.h"
 #include <SPIFFS.h>
 
 // Setup

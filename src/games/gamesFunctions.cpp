@@ -1,7 +1,7 @@
-#include "gamesFunctions.h"
-#include "config.h"
-#include "trivial.h"
-#include "snake.h"
+#include "src/os/config.h"
+#include "src/games/gamesFunctions.h"
+#include "src/games/trivial/trivial.h"
+#include "src/games/snake/snake.h"
 
 void gameMenu() {
     bool exit = false;

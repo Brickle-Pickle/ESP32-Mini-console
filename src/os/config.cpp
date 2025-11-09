@@ -1,4 +1,4 @@
-#include "config.h"
+#include "src/os/config.h"
 
 // OLED Init
 Adafruit_SSD1306 display(WIDTH, HEIGHT, &Wire, -1);

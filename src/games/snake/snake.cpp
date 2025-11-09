@@ -1,4 +1,4 @@
-#include "snake.h"
+#include "src/games/snake/snake.h"
 #include <FS.h>
 #include <SPIFFS.h>
 

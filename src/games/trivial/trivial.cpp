@@ -1,4 +1,4 @@
-#include "trivial.h"
+#include "src/games/trivial/trivial.h"
 #include <FS.h>
 #include <SPIFFS.h>
 #include <esp_system.h>

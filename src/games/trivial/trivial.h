@@ -1,7 +1,7 @@
 #ifndef TRIVIAL_H
 #define TRIVIAL_H
 
-#include "utils.h"
+#include "src/os/utils.h"
 
 void playTrivial();
 void getTrivialQuestions();

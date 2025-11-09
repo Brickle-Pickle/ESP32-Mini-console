@@ -1,7 +1,7 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-#include "config.h"
+#include "src/os/config.h"
 
 void clearScreen();
 void loadScene(String scene);
