@@ -1,6 +1,7 @@
 #include "gamesFunctions.h"
 #include "config.h"
 #include "trivial.h"
+#include "snake.h"
 
 void gameMenu() {
     bool exit = false;
@@ -36,7 +37,7 @@ void gameMenuController(int selectedOption) {
     
     switch (selectedOption) {
         case 0: playTrivial(); break;
-        // case 1: playSnake(); break;
+        case 1: playSnake(); break;
         // case 2: playPong(); break;
     }
 }

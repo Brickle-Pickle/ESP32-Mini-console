@@ -37,7 +37,7 @@ struct TrivialQuestion {
 };
 
 // Global Variables
-#define TRIVIAL_MAX_QUESTIONS 3
+#define TRIVIAL_MAX_QUESTIONS 10
 extern int ldrValue;
 extern bool ledState;
 extern int threshold;

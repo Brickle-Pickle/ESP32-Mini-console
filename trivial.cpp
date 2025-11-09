@@ -1,6 +1,7 @@
 #include "trivial.h"
 #include <FS.h>
 #include <SPIFFS.h>
+#include <esp_system.h>
 
 int trivialScore = 0;
 int trivialQuestionCount = 0;
@@ -12,6 +13,7 @@ bool trivialGameOver = false;
 TrivialQuestion trivialQuestions[TRIVIAL_MAX_QUESTIONS];
 
 void playTrivial() {
+    setupTrivialData();
     clearScreen();
     int trivialSelectedOption = 0;
     getTrivialQuestions();
@@ -202,4 +204,18 @@ void displayTrivialQuestion(TrivialQuestion question, int size, int trivialSelec
     }
 
     display.display();
+}
+
+void setupTrivialData() {
+    trivialScore = 0;
+    trivialQuestionCount = 0;
+    trivialSelectedQuestion = 0;
+    trivialQuestionsSize = 0;
+    for (int i = 0; i < TRIVIAL_MAX_QUESTIONS; i++) {
+        trivialAlreadyAnsweredQuestions[i] = 0;
+    }
+    trivialGameOver = false;
+
+    // Seed RNG so consecutive game sessions don't produce the same question sequence
+    randomSeed(esp_random());
 }

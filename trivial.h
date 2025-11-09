@@ -9,5 +9,6 @@ void renderTrivialQuestion(String line, int questionIndex);
 void displayTrivialQuestion(TrivialQuestion question, int maxQuestions, int selectedOption);
 int getRandomTrivialQuestion();
 void checkTrivialAnswer(int selectedAnswer);
+void setupTrivialData();
 
 #endif

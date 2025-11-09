@@ -4,6 +4,7 @@
 #include "ledFunctions.h"
 #include "esp_sleep.h"
 #include "gamesFunctions.h"
+#include <SPIFFS.h>
 
 // Setup
 void setup() {
@@ -11,7 +12,6 @@ void setup() {
     Serial.begin(115200);
     delay(4000);
     Serial.println("Started mini console");
-
     // Pin init
     pinMode(LDR, INPUT);
     pinMode(LED, OUTPUT);
@@ -19,14 +19,16 @@ void setup() {
     pinMode(DOWN, INPUT_PULLUP);
     pinMode(RIGHT, INPUT_PULLUP);
     pinMode(LEFT, INPUT_PULLUP);
-
     // Oled init
     Wire.begin(SDA, SCL);
     if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
         Serial.println(F("Screen init failed"));
         while (1);
     }
-
+    // Initialize SPIFFS storage
+    if (!SPIFFS.begin(true)) {
+        Serial.println("SPIFFS init failed");
+    }
     // Display Init
     initDisplay();
 }
