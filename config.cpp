@@ -8,6 +8,8 @@ int ldrValue = 0;
 bool ledState = false;
 int threshold = 2750;
 int selectedOption = 0;
+char playerName[3] = "";
+char lettersAvailable[27] = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z', ' '};
 
 const int TRIVIAL_QUESTIONS_PER_GAME = 3;
 

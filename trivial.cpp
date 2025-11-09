@@ -27,6 +27,8 @@ void playTrivial() {
         trivialGameOver = true;
         return;
     }
+    playerName[0] = ' '; playerName[1] = ' '; playerName[2] = ' '; playerName[3] = '\0';
+    getPlayerName();
     
     while (!trivialGameOver) {
         trivialSelectedQuestion = getRandomTrivialQuestion();
@@ -60,7 +62,17 @@ void playTrivial() {
                 trivialSelectedAnswer = trivialSelectedOption;
                 if (trivialSelectedAnswer == trivialQuestions[trivialSelectedQuestion].correctAnswer) {
                     trivialScore++;
+                    clearScreen();
+                    display.println("Correct!");
+                    display.display();
+                    delay(2000);
+                } else {
+                    clearScreen();
+                    display.println("Incorrect!");
+                    display.display();
+                    delay(2000);
                 }
+                clearScreen();
                 trivialAlreadyAnsweredQuestions[trivialSelectedQuestion] = 1;
                 trivialQuestionCount++;
                 
@@ -70,6 +82,19 @@ void playTrivial() {
             }  
         }
     }
+
+    clearScreen();
+    display.println("Game Over!");
+    display.println("Score: " + String(trivialScore));
+    display.println("\nPress any button to \ncontinue");
+    display.display();
+    while (digitalRead(UP) == HIGH && digitalRead(DOWN) == HIGH && digitalRead(RIGHT) == HIGH) {
+        delay(200);
+    }
+
+    updateLeaderboard(playerName, trivialScore, "tr");
+    displayLeaderboard("tr");
+    delay(5000);
 }
 
 int getRandomTrivialQuestion() {
