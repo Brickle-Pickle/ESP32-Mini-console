@@ -135,5 +135,11 @@ A DIY Arduino-based mini game console that includes simple games, a trivia mode,
 - Gameplay: The game displays a random sequence of LEDs; the player must press the button as soon as the last LED lights up.
 - PvP: Two players may play against each other; the first to press the button wins.
 
-## How to upload a game
-- See at `GAMES_UPLOAD.md`.
+## Trivial Game
+- Source: `MiniConsole\src\games\trivial\trivial.cpp`, `MiniConsole\src\games\trivial\trivial.h`.
+- Controls: UP, DOWN to navigate questions; RIGHT button to select an answer.
+- Gameplay: Players answer trivial questions; correct answers score points.
+- Leaderboard: After game over, scores update `data/leaderboard.tr` and display top entries.
+
+## Aditional Documentation
+- [How to upload a game](GAMES_UPLOAD.md)
