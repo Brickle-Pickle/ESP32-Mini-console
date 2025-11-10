@@ -2,6 +2,7 @@
 #include "src/os/config.h"
 #include "src/os/utils.h"
 #include "src/led/ledFunctions.h"
+#include "src/light/light.h"
 #include "src/games/gamesFunctions.h"
 #include "esp_sleep.h"
 #include <SPIFFS.h>
@@ -54,7 +55,7 @@ void loop() {
         delay(200);
         switch (selectedOption) {
             case 0: ledMenu(ledState, LED, ledMenuOptions); break;
-            // case 1: lightMenu(); break;
+            case 1: lightMenu(); break;
             case 2: gameMenu(); break;
             case 3: exitProgram(); break;
         }

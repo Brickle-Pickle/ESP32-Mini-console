@@ -1,23 +1,50 @@
-# How to upload a game
-To upload a new game to the MiniConsole, follow these steps:
+# How to Upload Your Game to MiniConsole
 
-1. **Create Game Folder**: Create a new folder in the `MiniConsole\src\games\` directory. The folder name should be the same as the game name.
-2. **Add Source Files**: Inside the new game folder, add the necessary source files for your game. At a minimum, you should have:
-   - `yourGameName.cpp`: The main implementation file for your game.
-   - `yourGameName.h`: The header file declaring functions and variables used in your game.
-3. **Data Files**: If your game requires any data files (e.g., trivia questions, leaderboard scores), create a file named `purpose.xx` inside the game folder. This file should contain a brief description of the purpose of the data file.
-Replace `xx` with the appropriate file extension for your data file (e.g., `sn` for snake leaderboard, `rt` for reaction time game).
-4. **Add Game to `config.cpp`**: Open the `config.cpp` file in the `MiniConsole\src\os` directory. Change gameMenuOptions to include your game.
-5. **Add Game to `gamesFunctions.cpp`**: Open the `gamesFunctions.cpp` file in the `MiniConsole\src\games` directory. In the function `gameMenuController`, add in the switch statement a case for your game in the same position as you added it to `config.cpp`. Also you should add the game .h file in the header as (in gamesFunctions.cpp)
-    ```c++ 
-        #include "src/games/yourGameName/yourGameName.h"
-    ```
-6. **Add Game to `yourGameName.h`**: Open the `yourGameName.h` file in the new game folder. This file must contain at least the following function prototype:
-   - `void playYourGameName();`
-   - Every else function used in your game.
-7. **Add Game to `yourGameName.cpp`**: Open the `yourGameName.cpp` file in the new game folder. In the function `playYourGameName`, add the game logic.
-8. **Upload the Firmware**: Open `MiniConsole.ino` in the Arduino IDE, select the appropriate board and port, then build and upload the firmware to the board.
-9. **Test Your Game**: After uploading, test your game on the MiniConsole to ensure it functions as expected.
-10. **Update Documentation**: Optionally, update the `README.md` file to include information about your new game, including controls, gameplay, and any special features.
+> Follow these steps to make your game stand out and playable on the MiniConsole!
 
-By following these steps, you can easily add a new game to the MiniConsole and share it with others.
+---
+
+## 1. Create Your Game Folder
+Create a folder in `MiniConsole/src/games/` and name it after your game.
+
+## 2. Add Source Files
+Include at least:
+- `yourGameName.cpp` (main implementation)
+- `yourGameName.h` (function and variable declarations)
+
+## 3. Data Files (Optional)
+If your game needs data (questions, scores, etc.), create a file named `purpose.xx` in your game folder and describe its purpose.
+Replace `xx` with the correct extension (e.g., `sn` for Snake, `rt` for Reaction Time).
+
+## 4. Add Your Game to config.cpp
+Edit `MiniConsole/src/os/config.cpp` and add your game to `gameMenuOptions`.
+
+## 5. Update gamesFunctions.cpp
+In `MiniConsole/src/games/gamesFunctions.cpp`:
+- In the `gameMenuController` function, add a `case` for your game in the same order as in `config.cpp`.
+- Add the include for your header:
+```cpp
+#include "src/games/yourGameName/yourGameName.h"
+```
+
+## 6. Declare the Main Function in Your Header
+In `yourGameName.h`:
+- Add at least:
+  - `void playYourGameName();`
+- Declare any other functions you use.
+
+## 7. Implement the Logic in Your .cpp
+In `yourGameName.cpp`, implement the `playYourGameName` function with your game logic.
+
+## 8. Upload the Firmware
+Open `MiniConsole.ino` in Arduino IDE, select the correct board and port, build and upload.
+
+## 9. Test Your Game
+Play on the MiniConsole and make sure everything works as expected.
+
+## 10. Update Documentation (Optional)
+Add details about your game in `README.md`: controls, gameplay, special features, etc.
+
+---
+
+Done! That is how you add and share your game on the MiniConsole.
