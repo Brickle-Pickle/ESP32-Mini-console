@@ -7,19 +7,19 @@
 // Symbols for the ball and paddles
 #define BALL_CHAR (char)254
 #define PADDLE_CHAR (char)219
-#define CELL_SIZE 4
+#define CELL_SIZE 2
 
 // Global variables
-int ballX = SCREEN_WIDTH / 2;
-int ballY = SCREEN_HEIGHT / 2;
-int ballVelocityX = 1;
-int ballVelocityY = 1;
-int playerPaddleY = SCREEN_HEIGHT / 2 - 10;
-int aiPaddleY = SCREEN_HEIGHT / 2 - 10;
-int playerScore = 0;
-int aiScore = 0;
-int winner = 0; // 0: No winner, 1: Player, 2: AI
-int aiDifficulty = -1; // 1: Easy, 2: Medium, 3: Hard
+static int ballX = SCREEN_WIDTH / 2;
+static int ballY = SCREEN_HEIGHT / 2;
+static int ballVelocityX = 2;
+static int ballVelocityY = 1;
+static int playerPaddleY = SCREEN_HEIGHT / 2 - 4;
+static int aiPaddleY = SCREEN_HEIGHT / 2 - 4;
+static int playerScore = 0;
+static int aiScore = 0;
+static int winner = 0; // 0: No winner, 1: Player, 2: AI
+static int aiDifficulty = -1; // 1: Easy, 2: Medium, 3: Hard
 
 // Pong Difficulty Menu Options
 MenuOption pongDifficultyOptions[3] = {
@@ -29,7 +29,7 @@ MenuOption pongDifficultyOptions[3] = {
 };
 
 // User input task handler
-TaskHandle_t pongInputTaskHandle = NULL
+TaskHandle_t pongInputTaskHandle = NULL;
 void TaskPongUserInput(void *pvParameters);
 
 void playPong() {
@@ -41,19 +41,20 @@ void playPong() {
 
     while (winner == 0) {
         // Update score
-        if (ballX <= 0) {
+        if (ballX <= 5) {
             aiScore++;
-            resetPong();
-        } else if (ballX >= SCREEN_WIDTH - 1) {
+            resetBall();
+        } else if (ballX >= SCREEN_WIDTH - 5) {
             playerScore++;
             resetBall();
         }
         
         // Check ball bounces
-        if (ballY <= 0 || ballY >= SCREEN_HEIGHT / CELL_SIZE - 1) {
+        if (ballY <= 2 || ballY >= SCREEN_HEIGHT - 2) {
             ballVelocityY = -ballVelocityY; // Bounce off top/bottom
         }
-        if ((ballX == 1 && ballY == playerPaddleY) || (ballX == SCREEN_WIDTH / CELL_SIZE - 2 && ballY == aiPaddleY)) {
+        if ((ballX <= 7 && ballY >= playerPaddleY && ballY <= playerPaddleY + 8) || 
+            (ballX >= SCREEN_WIDTH - 7 && ballY >= aiPaddleY && ballY <= aiPaddleY + 8)) {
             ballVelocityX = -ballVelocityX; // Bounce off paddles
         }
 
@@ -69,7 +70,7 @@ void playPong() {
         // Check for game over
         winner = (playerScore >= 5) ? 1 : (aiScore >= 5) ? 2 : 0;
 
-        delay(200);
+        delay(20);
     }
 
     // Stop user input task
@@ -77,50 +78,76 @@ void playPong() {
         vTaskDelete(pongInputTaskHandle);
         pongInputTaskHandle = NULL;
     }
+
+    // Display winner
+    clearScreen();
+    if (winner == 1) {
+        display.println("Player Wins!");
+    } else {
+        display.println("AI Wins!");
+    }
+    display.display();
+    delay(3000);
 }
 
 void updateDisplay(int ballX, int ballY, int playerPaddleY, int aiPaddleY, int playerScore, int aiScore) {
     clearScreen();
 
     // Draw ball
-    display.setCursor(ballX, ballY);
-    display.write(BALL_CHAR);
+    display.fillCircle(ballX, ballY, 2, SSD1306_WHITE);
 
-    // Draw player paddle
-    for (int i = 0; i < 4; i++) {
-        display.setCursor(0, playerPaddleY + i);
-        display.write(PADDLE_CHAR);
-    }
+    // Draw player paddle (left side)
+    display.fillRect(2, playerPaddleY, 3, 8, SSD1306_WHITE);
 
-    // Draw AI paddle
-    for (int i = 0; i < 4; i++) {
-        display.setCursor(SCREEN_WIDTH - 1, aiPaddleY + i);
-        display.write(PADDLE_CHAR);
-    }
+    // Draw AI paddle (right side)
+    display.fillRect(SCREEN_WIDTH - 5, aiPaddleY, 3, 8, SSD1306_WHITE);
 
     // Draw scores
+    display.setTextSize(1);
     display.setCursor(SCREEN_WIDTH / 4, 0);
     display.print(String(playerScore));
-    display.setCursor(3 * SCREEN_WIDTH / 4 - 20, 0);
+    display.setCursor(3 * SCREEN_WIDTH / 4, 0);
     display.print(String(aiScore));
 
     display.display();
 }
 
-void aiMove(int ballY, int ballX, int aiPaddleY, int aiDifficulty) {
+void aiMove(int ballY, int ballX, int &aiPaddleY, int aiDifficulty) {
     int reactionThreshold;
+    int reactionSpeed;
+    int activationDistance;
+    
     switch (aiDifficulty) {
-        case 1: reactionThreshold = 4; break; // Easy
-        case 2: reactionThreshold = 2; break; // Medium
-        case 3: reactionThreshold = 1; break; // Hard
-        default: reactionThreshold = 4; break;
+        case 1: // Easy
+            reactionThreshold = 8;
+            reactionSpeed = 3;
+            activationDistance = 3 * SCREEN_WIDTH / 4;
+            break;
+        case 2: // Medium
+            reactionThreshold = 5;
+            reactionSpeed = 2;
+            activationDistance = SCREEN_WIDTH / 2 + 20;
+            break;
+        case 3: // Hard
+            reactionThreshold = 1;
+            reactionSpeed = 1;
+            activationDistance = SCREEN_WIDTH / 2;
+            break;
+        default:
+            reactionThreshold = 8;
+            reactionSpeed = 3;
+            activationDistance = 3 * SCREEN_WIDTH / 4;
+            break;
     }
 
-    if (ballX >= SCREEN_WIDTH / 2) { // Only move when ball is on AI side
-        if (ballY < aiPaddleY && abs(ballY - aiPaddleY) > reactionThreshold) {
-            aiPaddleY--;
-        } else if (ballY > aiPaddleY + 3 && abs(ballY - (aiPaddleY + 3)) > reactionThreshold) {
-            aiPaddleY++;
+    if (ballX >= activationDistance) { // Only move when ball is close enough
+        int paddleCenter = aiPaddleY + 4;
+        if (ballY < paddleCenter - reactionThreshold && aiPaddleY > 0) {
+            aiPaddleY -= reactionSpeed;
+            if (aiPaddleY < 0) aiPaddleY = 0;
+        } else if (ballY > paddleCenter + reactionThreshold && aiPaddleY < SCREEN_HEIGHT - 8) {
+            aiPaddleY += reactionSpeed;
+            if (aiPaddleY > SCREEN_HEIGHT - 8) aiPaddleY = SCREEN_HEIGHT - 8;
         }
     }
 }
@@ -129,24 +156,24 @@ void TaskPongUserInput(void *pvParameters) {
     while (true) {
         if (digitalRead(UP) == LOW && playerPaddleY > 0) {
             playerPaddleY--;
-        } else if (digitalRead(DOWN) == LOW && playerPaddleY < SCREEN_HEIGHT / CELL_SIZE - 4) {
+        } else if (digitalRead(DOWN) == LOW && playerPaddleY < SCREEN_HEIGHT - 8) {
             playerPaddleY++;
         }
-        delay(200);
+        delay(20);
     }
 }
 
 void resetBall() {
     ballX = SCREEN_WIDTH / 2;
     ballY = SCREEN_HEIGHT / 2;
-    ballVelocityX = (ballVelocityX > 0) ? -1 : 1; // Change direction
-    ballVelocityY = (ballVelocityY > 0) ? 1 : -1; // Keep same vertical direction
+    ballVelocityX = (ballVelocityX > 0) ? -2 : 2; // Change direction
+    ballVelocityY = (random(0, 2) == 0) ? -1 : 1; // Random vertical direction
 }
 
 void selectPongDifficulty() {
+    int pongMenuSelectedOption = 0;
     while (aiDifficulty == -1) {
         clearScreen();
-        int pongMenuSelectedOption = 0;
 
         if (digitalRead(UP) == LOW && pongMenuSelectedOption > 0) {
             pongMenuSelectedOption--;
@@ -167,10 +194,10 @@ void resetPong() {
     winner = 0;
     ballX = SCREEN_WIDTH / 2;
     ballY = SCREEN_HEIGHT / 2;
-    ballVelocityX = 1;
+    ballVelocityX = 2;
     ballVelocityY = 1;
-    playerPaddleY = SCREEN_HEIGHT / 2 - 10;
-    aiPaddleY = SCREEN_HEIGHT / 2 - 10;
+    playerPaddleY = SCREEN_HEIGHT / 2 - 4;
+    aiPaddleY = SCREEN_HEIGHT / 2 - 4;
     playerScore = 0;
     aiScore = 0;
     aiDifficulty = -1;

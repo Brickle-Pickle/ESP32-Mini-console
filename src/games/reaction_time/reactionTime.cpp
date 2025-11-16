@@ -1,9 +1,9 @@
 #include "src/games/reaction_time/reactionTime.h"
 #include "src/led/ledFunctions.h"
 
-int scores[2];
-int winner = -1;
-int loser = -1;
+static int scores[2];
+static int winner = -1;
+static int loser = -1;
 
 TaskHandle_t earlyPressTaskHandle = NULL;
 void TaskDetectEarlyPress(void *pvParameters);
