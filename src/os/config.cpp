@@ -40,6 +40,7 @@ MenuOption gameMenuOptions[] = {
     {"TRIVIAL", 1},
     {"SNAKE", 2},
     {"PONG", 3},
-    {"REACTION!", 4}
+    {"REACTION!", 4},
+    {"MORSE TRAINER", 5}
 };
 const int gameMenuOptionsSize = sizeof(gameMenuOptions) / sizeof(gameMenuOptions[0]);

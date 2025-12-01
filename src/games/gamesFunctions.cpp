@@ -4,6 +4,7 @@
 #include "src/games/snake/snake.h"
 #include "src/games/reaction_time/reactionTime.h"
 #include "src/games/pong/pong.h"
+#include "src/games/morse/morseTrainer.h"
 
 void gameMenu() {
     bool exit = false;
@@ -42,5 +43,6 @@ void gameMenuController(int selectedOption) {
         case 1: playSnake(); break;
         case 2: playPong(); break;
         case 3: playReaction(); break;
+        case 4: playMorseTrainer(); break;
     }
 }
